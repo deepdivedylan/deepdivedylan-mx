@@ -88,8 +88,15 @@ class Language {
 		$this->locale = $newLocale;
 	}
 
+	/**
+	 * sets up the locale; this is meant to be executed after starting the session
+	 **/
 	public function setupLocale() : void {
-
+		putenv("LANG=" . $this->locale);
+		setlocale(LC_ALL, $this->locale);
+		bindtextdomain($this->domain, dirname(__DIR__, 2) . "/locale");
+		bind_textdomain_codeset($this->domain, "UTF-8");
+		textdomain($this->domain);
 	}
 
 	/**
