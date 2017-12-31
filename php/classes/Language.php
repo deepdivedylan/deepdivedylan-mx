@@ -134,6 +134,11 @@ class Language {
 		}
 	}
 
+	/**
+	 * guesses locale based on sessions, cookies, and Accept-Language
+	 *
+	 * @return @string locale guessed
+	 **/
 	public static function guessLocale() : string {
 		// read the default settings
 		$config = readConfig("/etc/apache2/encrypted-config/deepdivedylan-mx.ini");
@@ -162,6 +167,7 @@ class Language {
 					}
 				});
 
+				// stop search if guessed
 				if($stop === true) {
 					break;
 				}
