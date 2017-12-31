@@ -2,6 +2,10 @@
 
 namespace Mx\Deepdivedylan\Site;
 
+require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
+
+use Teto\HTTP\AcceptLanguage;
+
 class Language {
 	/**
 	 * application domain
@@ -130,7 +134,7 @@ class Language {
 	}
 
 	public static function guessLocale() : string {
-		$locale = "";
+		$locale = "es_MX.utf8";
 
 		// first, try the session
 		if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -140,7 +144,11 @@ class Language {
 		} else if(empty($_GET["locale"]) === false) {
 			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else {
-			$headers = array_change_key_case(apache_request_headers(), CASE_UPPER);
+			// $headers = array_change_key_case(apache_request_headers(), CASE_UPPER);
+			$languages = AcceptLanguage::get();
+			foreach($languages as $language) {
+
+			}
 		}
 	}
 
