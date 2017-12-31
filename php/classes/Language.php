@@ -4,6 +4,11 @@ namespace Mx\Deepdivedylan\Site;
 
 class Language {
 	/**
+	 * application domain
+	 * @var string $domain
+	 **/
+	protected $domain;
+	/**
 	 * current locale as reported by `locale -a`
 	 * @var string $locale
 	 **/
@@ -12,18 +17,46 @@ class Language {
 	/**
 	 * constructor for this Language
 	 *
+	 * @param string $newDomain new domain for the gettext application
 	 * @param string $newLocale new locale, as compatible with `locale -a`
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
-	public function __construct(string $newLocale) {
+	public function __construct(string $newDomain, string $newLocale) {
 		try {
+			$this->setDomain($newDomain);
 			$this->setLocale($newLocale);
 		} catch(\InvalidArgumentException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
+	}
+
+	/**
+	 * accessor method for domain
+	 *
+	 * @return string value of domain
+	 **/
+	public function getDomain(): string {
+		return($this->domain);
+	}
+
+	/**
+	 * mutator method for domain
+	 *
+	 * @param string $newDomain new value of domain
+	 * @throws \InvalidArgumentException if $newDomain is invalid
+	 **/
+	public function setDomain(string $newDomain) : string {
+		$newDomain = trim($newDomain);
+		$newDomain = filter_var($newDomain, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		if(empty($newDomain) === true) {
+			throw(new \InvalidArgumentException("invalid domain"));
+		}
+
+		$this->domain = $newDomain;
 	}
 
 	/**
@@ -53,6 +86,10 @@ class Language {
 		}
 
 		$this->locale = $newLocale;
+	}
+
+	public function setupLocale() : void {
+
 	}
 
 	/**
