@@ -129,6 +129,21 @@ class Language {
 		}
 	}
 
+	public static function guessLocale() : string {
+		$locale = "";
+
+		// first, try the session
+		if(session_status() !== PHP_SESSION_ACTIVE) {
+			$locale = $_SESSION["locale"];
+		} else if(empty($_COOKIE["locale"]) === false) {
+			$locale = trim(filter_input(INPUT_COOKIE, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+		} else if(empty($_GET["locale"]) === false) {
+			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
+		} else {
+			$headers = array_change_key_case(apache_request_headers(), CASE_UPPER);
+		}
+	}
+
 	/**
 	 * determines whether the locale is supported
 	 *
