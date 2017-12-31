@@ -137,7 +137,7 @@ class Language {
 	/**
 	 * guesses locale based on sessions, cookies, and Accept-Language
 	 *
-	 * @return @string locale guessed
+	 * @return string locale guessed
 	 * @throws SessionNotActiveException if session is inactive
 	 **/
 	public static function guessLocale() : string {
