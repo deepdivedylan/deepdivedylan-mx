@@ -20,6 +20,7 @@ class Language {
 	 * @param string $newDomain new domain for the gettext application
 	 * @param string $newLocale new locale, as compatible with `locale -a`
 	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws SessionNotActiveException if session is inactive
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 **/
@@ -27,7 +28,7 @@ class Language {
 		try {
 			$this->setDomain($newDomain);
 			$this->setLocale($newLocale);
-		} catch(\InvalidArgumentException | \Exception | \TypeError $exception) {
+		} catch(\InvalidArgumentException | SessionNotActiveException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -74,8 +75,13 @@ class Language {
 	 *
 	 * @param string $newLocale new value of locale
 	 * @throws \InvalidArgumentException if $newLocale is invalid
+	 * @throws SessionNotActiveException if session is inactive
 	 **/
 	public function setLocale(string $newLocale) : void {
+		if(session_status() !== PHP_SESSION_ACTIVE) {
+			throw(new SessionNotActiveException("session inactive"));
+		}
+
 		$newLocale = trim($newLocale);
 		$newLocale = filter_var($newLocale, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -86,6 +92,7 @@ class Language {
 		}
 
 		$this->locale = $newLocale;
+		$_SESSION["locale"] = $this->locale;
 	}
 
 	/**
@@ -97,6 +104,29 @@ class Language {
 		bindtextdomain($this->domain, dirname(__DIR__, 2) . "/locale");
 		bind_textdomain_codeset($this->domain, "UTF-8");
 		textdomain($this->domain);
+	}
+
+	/**
+	 * switches locale and stores it in the session
+	 *
+	 * @param string $newLocale locale to switch to
+	 * @throws \InvalidArgumentException if $newLocale is invalid
+	 * @throws SessionNotActiveException if session is inactive
+	 **/
+	public function switchLocale(string $newLocale) : void {
+		// verify the locale exists
+		$locale = trim($newLocale);
+		if(self::validateLocale($newLocale) === false) {
+			throw(new \InvalidArgumentException("invalid locale"));
+		}
+
+		// set the locale
+		try {
+			$this->setLocale($newLocale);
+		} catch(\InvalidArgumentException | SessionNotActiveException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 	}
 
 	/**
