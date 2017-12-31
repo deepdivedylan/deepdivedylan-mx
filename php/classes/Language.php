@@ -2,6 +2,7 @@
 
 namespace Mx\Deepdivedylan\Site;
 
+require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
 
 use Teto\HTTP\AcceptLanguage;
@@ -134,22 +135,42 @@ class Language {
 	}
 
 	public static function guessLocale() : string {
-		$locale = "es_MX.utf8";
+		// read the default settings
+		$config = readConfig("/etc/apache2/encrypted-config/deepdivedylan-mx.ini");
+		$locales = json_decode($config["locales"]);
+
+		$locale = $locales->default;
 
 		// first, try the session
 		if(session_status() !== PHP_SESSION_ACTIVE) {
 			$locale = $_SESSION["locale"];
 		} else if(empty($_COOKIE["locale"]) === false) {
+			// then, try the cookie
 			$locale = trim(filter_input(INPUT_COOKIE, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else if(empty($_GET["locale"]) === false) {
+			// then try a get parameter
 			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else {
-			// $headers = array_change_key_case(apache_request_headers(), CASE_UPPER);
+			// search the Accept-Language array and compare to supported languages
+			$stop = false;
 			$languages = AcceptLanguage::get();
 			foreach($languages as $language) {
+				array_walk($locales, function($currLocale) {
+					if(substr($currLocale, 0, 2) === $language) {
+						$locale = $currLocale;
+						$stop = true;
+					}
+				});
 
+				if($stop === true) {
+					break;
+				}
 			}
 		}
+
+		// return the found locale if it exists
+		$locale = self::validateLocale($locale) ? $locale : $locales->default;
+		return($locale);
 	}
 
 	/**
