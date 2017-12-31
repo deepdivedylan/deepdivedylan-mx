@@ -138,8 +138,13 @@ class Language {
 	 * guesses locale based on sessions, cookies, and Accept-Language
 	 *
 	 * @return @string locale guessed
+	 * @throws SessionNotActiveException if session is inactive
 	 **/
 	public static function guessLocale() : string {
+		if(session_status() !== PHP_SESSION_ACTIVE) {
+			throw(new SessionNotActiveException("session inactive"));
+		}
+
 		// read the default settings
 		$config = readConfig("/etc/apache2/encrypted-config/deepdivedylan-mx.ini");
 		$locales = json_decode($config["locales"]);
