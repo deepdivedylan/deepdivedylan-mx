@@ -41,7 +41,7 @@ class Language {
 	 *
 	 * @param string $newLocale new value of locale
 	 * @throws \InvalidArgumentException if $newLocale is invalid
-	 **/ 
+	 **/
 	public function setLocale(string $newLocale) : void {
 		$newLocale = trim($newLocale);
 		$newLocale = filter_var($newLocale, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -53,5 +53,17 @@ class Language {
 		}
 
 		$this->locale = $newLocale;
+	}
+
+	/**
+	 * determines whether the locale is supported
+	 *
+	 * @param string $newLocale locale to search for
+	 * @return bool true if supported, false if not
+	 **/
+	public static function validateLocale(string $newLocale) : bool {
+		$output = trim(shell_exec("locale - a"));
+		$locales = explode(PHP_EOL, $output);
+		return(array_find($newLocale, $locales) !== false);
 	}
 }
