@@ -3,9 +3,6 @@
 namespace Mx\Deepdivedylan\Site;
 
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
-require_once(dirname(__DIR__, 2) . "/vendor/autoload.php");
-
-use Teto\HTTP\AcceptLanguage;
 
 class Language {
 	/**
@@ -162,21 +159,11 @@ class Language {
 			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else {
 			// search the Accept-Language array and compare to supported languages
-			$stop = false;
-			$languages = AcceptLanguage::get();
-			foreach($languages as $language) {
-				array_walk($locales, function($currLocale) {
-					if(substr($currLocale, 0, 2) === $language) {
-						$locale = $currLocale;
-						$stop = true;
-					}
-				});
-
-				// stop search if guessed
-				if($stop === true) {
-					break;
-				}
-			}
+			$accpetedlocale = \Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+			$resultLocales = array_filter($locales->supported, function(string $language) {
+				return(substr($acceptedLocale, 0, 2) === substr($language, 0, 2));
+			});
+			$locale = $resultLocales[0] ?? $locales->default;
 		}
 
 		// return the found locale if it exists
