@@ -95,6 +95,7 @@ class Language {
 
 		$this->locale = $newLocale;
 		$_SESSION["locale"] = $this->locale;
+		\Locale::setDefault(str_replace("_", "-", substr($this->locale, 0, 4)));
 	}
 
 	/**
