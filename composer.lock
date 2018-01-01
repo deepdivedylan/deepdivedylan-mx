@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1a4fcaf960f3dfebbe5226ce103dabc5",
+    "content-hash": "03310842e1122ff687e17acd9cb764db",
     "packages": [
         {
             "name": "clue/stream-filter",
@@ -952,47 +952,6 @@
                 "validate"
             ],
             "time": "2016-11-23T20:04:58+00:00"
-        },
-        {
-            "name": "zonuexe/http-accept-language",
-            "version": "0.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BaguettePHP/http-accept-language.git",
-                "reference": "f71422b1200737aa9d7c7fa83f07cbe4616198d5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BaguettePHP/http-accept-language/zipball/f71422b1200737aa9d7c7fa83f07cbe4616198d5",
-                "reference": "f71422b1200737aa9d7c7fa83f07cbe4616198d5",
-                "shasum": ""
-            },
-            "require": {
-                "ext-intl": "*"
-            },
-            "require-dev": {
-                "phploc/phploc": "*",
-                "phpunit/phpunit": "4.1.*",
-                "theseer/phpdox": "0.6.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Teto\\HTTP\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "USAMI Kenta",
-                    "email": "tadsan@zonu.me"
-                }
-            ],
-            "description": "HTTP Accept-Language Header parser",
-            "time": "2014-10-19T09:22:18+00:00"
         }
     ],
     "packages-dev": [],
@@ -1001,8 +960,7 @@
     "stability-flags": {
         "google/recaptcha": 0,
         "mailgun/mailgun-php": 0,
-        "php-http/guzzle6-adapter": 0,
-        "zonuexe/http-accept-language": 0
+        "php-http/guzzle6-adapter": 0
     },
     "prefer-stable": false,
     "prefer-lowest": false,
