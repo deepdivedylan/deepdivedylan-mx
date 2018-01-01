@@ -110,6 +110,13 @@ class Language {
 	}
 
 	/**
+	 * sends the Content-Language header
+	 **/
+	public function sendContentLanguageHeader() : void {
+		header("Content-Language: " . $this->locale);
+	}
+
+	/**
 	 * switches locale and stores it in the session
 	 *
 	 * @param string $newLocale locale to switch to
