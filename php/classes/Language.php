@@ -150,6 +150,9 @@ class Language {
 			throw(new SessionNotActiveException("session inactive"));
 		}
 
+		// read the default settings
+		$config = readConfig("/etc/apache2/encrypted-config/deepdivedylan-mx.ini");
+		$locales = json_decode($config["locales"]);
 		$locale = $locales->default;
 
 		// first, try the session
@@ -162,10 +165,6 @@ class Language {
 			// then try a get parameter
 			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else {
-			// read the default settings
-			$config = readConfig("/etc/apache2/encrypted-config/deepdivedylan-mx.ini");
-			$locales = json_decode($config["locales"]);
-
 			// search the Accept-Language array and compare to supported languages
 			$accpetedlocale = \Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
 			$resultLocales = array_filter($locales->supported, function(string $language) {
