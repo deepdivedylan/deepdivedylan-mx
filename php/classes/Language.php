@@ -175,8 +175,8 @@ class Language {
 			$locale = trim(filter_input(INPUT_GET, "locale", FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES));
 		} else {
 			// search the Accept-Language array and compare to supported languages
-			$accpetedlocale = \Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
-			$resultLocales = array_filter($locales->supported, function(string $language) {
+			$acceptedLocale = \Locale::acceptFromHttp($_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+			$resultLocales = array_filter($locales->supported, function(string $language) use ($acceptedLocale) {
 				return(substr($acceptedLocale, 0, 2) === substr($language, 0, 2));
 			});
 			$locale = $resultLocales[0] ?? $locales->default;
