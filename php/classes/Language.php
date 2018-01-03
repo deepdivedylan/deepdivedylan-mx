@@ -196,6 +196,6 @@ class Language {
 	public static function validateLocale(string $newLocale) : bool {
 		$output = trim(shell_exec("locale - a"));
 		$locales = explode(PHP_EOL, $output);
-		return(array_find($newLocale, $locales) !== false);
+		return(array_search($newLocale, $locales) !== false);
 	}
 }
