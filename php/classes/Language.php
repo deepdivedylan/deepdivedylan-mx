@@ -71,6 +71,15 @@ class Language {
 		return($this->locale);
 	}
 
+	/**
+	 * pseudo accessor method for shortened version of the locale
+	 * e.g., es_MX.utf8 becomes es-MX
+	 *
+	 * @return string shortened version of current locale
+	 **/
+	public function getLocaleAbbreviation() {
+		return(str_replace("_", "-", substr($this->locale, 0, strpos($this->locale, "."))));
+	}
 
 	/**
 	 * mutator method for locale
@@ -95,7 +104,7 @@ class Language {
 
 		$this->locale = $newLocale;
 		$_SESSION["locale"] = $this->locale;
-		\Locale::setDefault(str_replace("_", "-", substr($this->locale, 0, 4)));
+		\Locale::setDefault($this->getLocaleAbbreviation());
 	}
 
 	/**
