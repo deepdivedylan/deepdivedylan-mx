@@ -51,7 +51,7 @@ class Language {
 	 * @param string $newDomain new value of domain
 	 * @throws \InvalidArgumentException if $newDomain is invalid
 	 **/
-	public function setDomain(string $newDomain) : string {
+	public function setDomain(string $newDomain) : void {
 		$newDomain = trim($newDomain);
 		$newDomain = filter_var($newDomain, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
