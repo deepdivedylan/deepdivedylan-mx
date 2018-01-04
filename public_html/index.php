@@ -16,5 +16,10 @@ $language->sendContentLanguageHeader();
 <html lang="<?php echo $language->getLocaleAbbreviation(); ?>">
 	<head>
 		<meta charset="UTF-8" />
-		<title>
+		<title><?php echo _("Deep Dive Dylan"); ?></title>
 	</head>
+	<body>
+		<h1><?php echo _("Deep Dive Dylan"); ?></h1>
+		<p><?php echo _("Bienvendios al sitio"); ?></p>
+	</body>
+</html>
